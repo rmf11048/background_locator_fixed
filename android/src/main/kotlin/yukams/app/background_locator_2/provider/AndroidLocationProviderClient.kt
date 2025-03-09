@@ -70,6 +70,11 @@ class AndroidLocationProviderClient(context: Context, override var listener: Loc
         // so that we don't just receive better and better accuracy and eventually risk receiving
         // only minimal locations
         if (location.hasAccuracy()) {
+            if (!location.accuracy.isNaN() && 
+                location.accuracy > 50) {
+                // ignore locations with low accurancy (> 50 meters)
+                return;
+            }
             if (!location.accuracy.isNaN() &&
                     location.accuracy != 0.0f &&
                     !location.accuracy.isFinite() &&
